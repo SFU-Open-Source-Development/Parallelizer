@@ -5,7 +5,7 @@ set(Boost_ARCHITECTURE "-x64")
 set(Boost_USE_STATIC_LIBS ON)
 set(CMAKE_CXX_STANDARD 14)
 set(BOOST_ROOT "include/boost_1_76_0")
-find_package(Boost 1.76.0 COMPONENTS log log_setup)
+find_package(Boost 1.76.0 COMPONENTS thread log log_setup)
 
 if(NOT Boost_FOUND)
     message(FATAL_ERROR "could not find boost")
