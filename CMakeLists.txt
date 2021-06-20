@@ -2,9 +2,9 @@ cmake_minimum_required(VERSION 3.19)
 project(Parallelizer)
 
 set(Boost_ARCHITECTURE "-x64")
+set(Boost_USE_STATIC_LIBS ON)
 set(CMAKE_CXX_STANDARD 14)
 set(BOOST_ROOT "include/boost_1_76_0")
-set(Boost_DEBUG 1)
 find_package(Boost 1.76.0 COMPONENTS log log_setup)
 
 if(NOT Boost_FOUND)
