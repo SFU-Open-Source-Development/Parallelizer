@@ -4,12 +4,12 @@
 #define PARALLELIZER_FILE_HANDLER_H
 
 #include <fstream>
+#include "utils.h"
 
-class file_handler {
+class utils::file_handler {
 public:
-    file_handler(std::string file_name);
-    file_handler():file_name_("");
-
+    explicit file_handler(std::string file_name);
+    file_handler() = default;
 
     std::string ReadLine();
 
