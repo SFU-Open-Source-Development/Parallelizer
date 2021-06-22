@@ -6,6 +6,18 @@
 #include <utility>
 #include "file_handler.h"
 
+bool isReserved(char c) {
+    
+    return !isalnum(c) && c != '_';
+
+}
+
+bool isWhiteSpace(char c) {
+
+    return c == ' ' || c == '\t' || c == '\n';
+
+}
+
 std::string utils::file_handler::ReadToken() {
 /**
  * Returns the next line in file.
@@ -14,13 +26,13 @@ std::string utils::file_handler::ReadToken() {
  * @return: next line as a string, null if next line if file end.
  */
     if (!this->file_obj_.is_open()){
-        BOOST_LOG_TRIVIAL(debug) << "Attempting to read closed file. returning nullptr";
-        return nullptr;
+        BOOST_LOG_TRIVIAL(debug) << "Attempting to read closed file. returning empty string";
+        return "";
     }
     auto rslt = this->curr_token_;
 
-    if (!NextToken()){
-        BOOST_LOG_TRIVIAL(debug) << "Reached end of file, returning last  token. Closing file.";
+    if (!this->NextToken()){
+        BOOST_LOG_TRIVIAL(debug) << "Reached end of file, returning last token. Closing file.";
         this->file_obj_.close();
     }
 
@@ -34,13 +46,34 @@ utils::file_handler::file_handler(std::string file_name) : file_name_(std::move(
         BOOST_LOG_TRIVIAL(fatal) << "Unable to open file: " << file_name_ << "\nExiting";
         exit(EXIT_FAILURE);
     }
+    else{
+        this->file_pbuf_ = this->file_obj_.rdbuf();
+    }
     this->NextToken();
 }
 
 bool utils::file_handler::NextToken() {
-    auto retval = this->file_obj_.peek() != EOF;
-//    getline(this->file_obj_, this->curr_token_);
-    this->file_obj_ >> this->curr_token_;
-    return retval;
+
+    std::string tmpStr = "";
+    // Remove leading whitespace
+    while(this->file_pbuf_->sgetc() != EOF && isWhiteSpace(this->file_pbuf_->sgetc())){
+        this->file_pbuf_->sbumpc();
+    }
+    // Reached end of file
+    if(this->file_pbuf_->sgetc() == EOF){
+        return false;
+    }
+    if(!isReserved(this->file_pbuf_->sgetc())){
+        // regular alphanumeric values and _
+        while(this->file_pbuf_->sgetc() != EOF && !isReserved(this->file_pbuf_->sgetc())){
+            tmpStr += this->file_pbuf_->sbumpc();
+        }
+        this->curr_token_ = std::move(tmpStr);
+    }
+    else{
+        // Reserved character
+        this->curr_token_ = this->file_pbuf_->sbumpc();
+    }
+    return true;
 }
 

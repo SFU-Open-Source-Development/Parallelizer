@@ -16,6 +16,7 @@ public:
 private:
     std::string file_name_;
     std::ifstream file_obj_;
+    std::streambuf *file_pbuf_;
 
     std::string curr_token_;
 

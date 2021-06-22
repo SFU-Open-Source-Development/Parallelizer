@@ -13,13 +13,20 @@ int main()
 //    BOOST_LOG_TRIVIAL(error) << "An error severity message";
 //    BOOST_LOG_TRIVIAL(fatal) << "A fatal severity message";
 
-    auto* test = new utils::file_handler("../test/file_handler/non-code-test/test2");
+    auto* test = new utils::file_handler("test/file_handler/code-test/test1");
 
-    BOOST_LOG_TRIVIAL(info) << test->ReadToken() << std::endl;
-    BOOST_LOG_TRIVIAL(info) << test->ReadToken() << std::endl;
+    auto rslt = test->ReadToken();
+    while(rslt != ""){
+        BOOST_LOG_TRIVIAL(info) << rslt;
+        rslt = test->ReadToken();
+    }
 
-    BOOST_LOG_TRIVIAL(info) << test->ReadToken() << std::endl;
-    BOOST_LOG_TRIVIAL(info) << test->ReadToken() << std::endl;
+//    BOOST_LOG_TRIVIAL(info) << test->ReadToken() << std::endl;
+//    BOOST_LOG_TRIVIAL(info) << test->ReadToken() << std::endl;
+
+//    BOOST_LOG_TRIVIAL(info) << test->ReadToken() << std::endl;
+//    BOOST_LOG_TRIVIAL(info) << test->ReadToken() << std::endl;
+
 
     delete test;
 //    std::cout << test->ReadToken();

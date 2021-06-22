@@ -1,0 +1,13 @@
+int main(){
+
+  int c; 
+  int j;
+  c = 1;
+  j = 2;
+  c++;
+  j++;
+  int x = c + 1;
+  int y = c + 1;
+  int z = c + j;
+
+}
