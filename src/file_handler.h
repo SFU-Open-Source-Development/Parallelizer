@@ -11,15 +11,15 @@ public:
     explicit file_handler(std::string file_name);
     file_handler() = default;
 
-    std::string ReadLine();
+    std::string ReadToken();
 
 private:
     std::string file_name_;
     std::ifstream file_obj_;
 
-    std::string curr_line_;
+    std::string curr_token_;
 
-    bool NextLine();
+    bool NextToken();
 };
 
 

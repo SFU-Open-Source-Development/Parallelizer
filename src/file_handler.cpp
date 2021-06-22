@@ -6,10 +6,10 @@
 #include <utility>
 #include "file_handler.h"
 
-std::string utils::file_handler::ReadLine() {
+std::string utils::file_handler::ReadToken() {
 /**
  * Returns the next line in file.
- * Increments to next line using NextLine()
+ * Increments to next line using NextToken()
  *
  * @return: next line as a string, null if next line if file end.
  */
@@ -17,10 +17,10 @@ std::string utils::file_handler::ReadLine() {
         BOOST_LOG_TRIVIAL(debug) << "Attempting to read closed file. returning nullptr";
         return nullptr;
     }
-    auto rslt = this->curr_line_;
+    auto rslt = this->curr_token_;
 
-    if (!NextLine()){
-        BOOST_LOG_TRIVIAL(info) << "Reached end of file, returning last line. Closing file.";
+    if (!NextToken()){
+        BOOST_LOG_TRIVIAL(debug) << "Reached end of file, returning last  token. Closing file.";
         this->file_obj_.close();
     }
 
@@ -34,12 +34,13 @@ utils::file_handler::file_handler(std::string file_name) : file_name_(std::move(
         BOOST_LOG_TRIVIAL(fatal) << "Unable to open file: " << file_name_ << "\nExiting";
         exit(EXIT_FAILURE);
     }
-    this->NextLine();
+    this->NextToken();
 }
 
-bool utils::file_handler::NextLine() {
+bool utils::file_handler::NextToken() {
     auto retval = this->file_obj_.peek() != EOF;
-    getline(this->file_obj_, this->curr_line_);
+//    getline(this->file_obj_, this->curr_token_);
+    this->file_obj_ >> this->curr_token_;
     return retval;
 }
 
