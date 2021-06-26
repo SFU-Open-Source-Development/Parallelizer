@@ -12,6 +12,7 @@ public:
     file_handler() = default;
 
     std::string ReadToken();
+    std::string PeakToken();
 
 private:
     std::string file_name_;

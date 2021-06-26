@@ -23,11 +23,12 @@ std::string utils::file_handler::ReadToken() {
  * Returns the next line in file.
  * Increments to next line using NextToken()
  *
- * @return: next line as a string, null if next line if file end.
+ * @return: next line as a string, empty if file end
  */
     if (!this->file_obj_.is_open()){
         BOOST_LOG_TRIVIAL(debug) << "Attempting to read closed file. returning empty string";
-        return "";
+        this->curr_token_ = "";
+        return this->curr_token_;
     }
     auto rslt = this->curr_token_;
 
@@ -37,6 +38,23 @@ std::string utils::file_handler::ReadToken() {
     }
 
     return rslt;
+}
+
+std::string utils::file_handler::PeakToken() {
+    /**
+     *
+     * Returns the curr_token_ 
+     *
+     * @return: curr_token_
+     */
+
+    if (!this->file_obj_.is_open()){
+        BOOST_LOG_TRIVIAL(debug) << "Attempting to read closed file. returning empty string";
+        this->curr_token_ = "";
+    }
+
+    return this->curr_token_;
+    
 }
 
 utils::file_handler::file_handler(std::string file_name) : file_name_(std::move(file_name)) {
